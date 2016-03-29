@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.SceneManagement;
 
 namespace UnityStandardAssets._2D
 {
@@ -18,7 +19,9 @@ namespace UnityStandardAssets._2D
 
 		private void Update()
 		{
-			
+			if (Input.GetKeyDown("escape")) {
+				SceneManager.LoadScene("PauseMenu");
+			}
 		}
 
 
