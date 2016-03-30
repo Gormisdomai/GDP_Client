@@ -10,7 +10,6 @@ namespace UnityStandardAssets._2D
 	{
 		private Plane m_Character;
 
-
 		private void Awake()
 		{
 			m_Character = GetComponent<Plane>();
@@ -18,7 +17,7 @@ namespace UnityStandardAssets._2D
 
 
 		private void Update()
-		{
+		{	
 			if (Input.GetKeyDown("escape")) {
 				SceneManager.LoadScene("PauseMenu");
 			}

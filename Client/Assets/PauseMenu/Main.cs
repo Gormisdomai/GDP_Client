@@ -15,8 +15,10 @@ public class Main : MonoBehaviour {
 
 	}
 
-	// Update is called once per frame
-	void Update () {
-
+	private void Update() {
+		if (Input.GetKeyDown("escape")) {
+			SceneManager.LoadScene(gameScene);
+		}
 	}
+
 }
