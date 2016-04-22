@@ -24,8 +24,6 @@ namespace UnityStandardAssets._2D
 
 		private void FixedUpdate()
 		{
-			// Read the inputs.
-			bool crouch = Input.GetKey(KeyCode.LeftControl);
 			float v = CrossPlatformInputManager.GetAxis("Vertical");
 			// Pass all parameters to the character control script.
 			m_Character.Move(v, false, false);
