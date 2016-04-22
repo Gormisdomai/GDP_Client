@@ -31,6 +31,20 @@ namespace UnityStandardAssets._2D
 			if (i != 5) PlayerPrefs.SetInt("score" + i.ToString(), newScore);
 		}
 
+		void OnTriggerEnter2D(Collider2D col){
+			if (col.gameObject.tag == "Hazard") {
+				col.gameObject.GetComponent<SpriteRenderer> ().color = Color.blue;
+				transform.Rotate (Vector3.forward * -10);
+			}
+		}
+
+		void OnTriggerExit2D(Collider2D col){
+			if (col.gameObject.tag == "Hazard") {
+				col.gameObject.GetComponent<SpriteRenderer> ().color = Color.white;
+				transform.Rotate (Vector3.forward * +10);
+			}
+		}
+
 		private void Update()
 		{
 			// temporary controls, no point adding ui until scale of other elements is set
