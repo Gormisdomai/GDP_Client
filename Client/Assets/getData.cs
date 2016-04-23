@@ -131,8 +131,8 @@ public class getData : MonoBehaviour
         if (resSocket != "") //if we have a new data point
         {
             resetTimer();
-            Debug.Log(resSocket); //print the response in console
-			GetComponent<SpikeSpawner>().spikesToDraw.Enqueue(float.Parse(resSocket.Split(',')[0]));
+            //Debug.Log(resSocket); //print the response in console
+			GetComponent<SpikeSpawner>().addSpike(float.Parse(resSocket.Split(',')[0]));
         }
     }
    

@@ -6,10 +6,12 @@ using System;
 public class SpikeSpawner : MonoBehaviour {
 
 	[SerializeField] public GameObject spike;
-	public Queue<float> spikesToDraw = new Queue<float> ();
+	//TODO, change this type to support mean and SD
+	private Queue<float> spikesToDraw = new Queue<float> ();
 	private Queue<GameObject> spikesDrawn = new Queue<GameObject>();
-	private float elapsed = 0;
+
 	public float rate = 10;
+	public float elapsed = 0;
 	public float despawnX = 0;
 	public float spawnX = 100;
 	public float spawnY = 0;
@@ -56,9 +58,10 @@ public class SpikeSpawner : MonoBehaviour {
 
 		elapsed += Time.deltaTime;
 		if (elapsed > rate) {
-			elapsed = 0;
-			float height = genHeight ();
 			if (spikesToDraw.Count > 0) {
+				print ("Spike drawn");
+				elapsed = 0;
+				float height = genHeight ();
 				spikesDrawn.Enqueue (genSpike (spawnY, height));
 				spikesDrawn.Enqueue (genSpike (1 - spawnY, -height));
 			}
@@ -71,5 +74,11 @@ public class SpikeSpawner : MonoBehaviour {
 				Destroy (spikesDrawn.Dequeue ());
 			}
 		}
+	}
+
+	//TODO change this to support mean and SD
+	public void addSpike(float mean) {
+		print ("spike queued:" + mean);
+		spikesToDraw.Enqueue(mean);
 	}
 }
