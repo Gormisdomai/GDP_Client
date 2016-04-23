@@ -132,7 +132,8 @@ public class getData : MonoBehaviour
         {
             resetTimer();
             //Debug.Log(resSocket); //print the response in console
-			GetComponent<SpikeSpawner>().addSpike(float.Parse(resSocket.Split(',')[0]));
+			string[] data = resSocket.Split(',');
+			GetComponent<SpikeSpawner>().addSpike(new float[] {float.Parse(data[0]), float.Parse(data[1])} );
         }
     }
    

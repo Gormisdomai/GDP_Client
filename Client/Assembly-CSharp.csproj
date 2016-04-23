@@ -3,9 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
     <ProjectGuid>{12F44184-A422-5F27-22E6-507969043F15}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -34,38 +33,42 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.XML" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Control.cs" />
-     <Compile Include="Assets\HighScores\HighScores.cs" />
-     <Compile Include="Assets\MainMenu\MainMenu.cs" />
-     <Compile Include="Assets\Plane.cs" />
-     <Compile Include="Assets\ScoreUpdate.cs" />
-     <Compile Include="Assets\SpikeSpawner.cs" />
-     <Compile Include="Assets\getData.cs" />
-     <None Include="Assets\TappyPlane\Spritesheet\planes.xml" />
-     <None Include="Assets\TappyPlane\license.txt" />
-     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
-     <None Include="Assets\TappyPlane\Spritesheet\sheet.xml" />
- <Reference Include="UnityEngine.Networking">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.UI">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
- </Reference>
+    <Compile Include="Assets\Control.cs" />
+    <Compile Include="Assets\HighScores\HighScores.cs" />
+    <Compile Include="Assets\MainMenu\MainMenu.cs" />
+    <Compile Include="Assets\Plane.cs" />
+    <Compile Include="Assets\ScoreUpdate.cs" />
+    <Compile Include="Assets\SpikeSpawner.cs" />
+    <Compile Include="Assets\getData.cs">
+      <DependentUpon>SpikeSpawner.cs</DependentUpon>
+    </Compile>
+    <None Include="Assets\TappyPlane\Spritesheet\planes.xml" />
+    <None Include="Assets\TappyPlane\license.txt" />
+    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\TappyPlane\Spritesheet\sheet.xml" />
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>..\..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{079D398E-4AFC-CD7E-7881-F923D075EBD1}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{079D398E-4AFC-CD7E-7881-F923D075EBD1}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -75,5 +78,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>
