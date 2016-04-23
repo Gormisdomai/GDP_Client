@@ -6,8 +6,12 @@ using System;
 public class SpikeSpawner : MonoBehaviour {
 
 	[SerializeField] public GameObject spike;
+<<<<<<< HEAD
 	private double[][] spikesToDraw;
 	//private Queue<double[]> spikesDrawn = new Queue<double[]> ();
+=======
+	public Queue<float> spikesToDraw;
+>>>>>>> 82b230c091dc09f75c21d1faa25696d4f7642c80
 	private Queue<GameObject> spikesDrawn = new Queue<GameObject>();
 	private float elapsed = 0;
 	public float rate = 10;
@@ -20,6 +24,7 @@ public class SpikeSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+<<<<<<< HEAD
 		spikesToDraw = new double[6][];
 		spikesToDraw[0] = new double[2]{1.55324, 0.011111929253036557};
 		spikesToDraw[1] = new double[2]{1.556865, 0.011530722814396703};
@@ -42,6 +47,114 @@ public class SpikeSpawner : MonoBehaviour {
 		GameObject s = Instantiate (spike, new Vector2 (spawnX, spawnY), Quaternion.identity) as GameObject;
 		s.GetComponent<SpriteRenderer> ().transform.localScale = new Vector3 (s.GetComponent<SpriteRenderer> ().transform.localScale.x, genHeight());
 		return s;
+=======
+		spikesToDraw = new Queue<float>();
+		/*spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (2);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (3);
+		spikesToDraw.Enqueue (1);
+		spikesToDraw.Enqueue (2);)*/
+>>>>>>> 82b230c091dc09f75c21d1faa25696d4f7642c80
 	}
 
 	/** Generates and returns a new spike object at the bottom of the frame. */
@@ -68,6 +181,7 @@ public class SpikeSpawner : MonoBehaviour {
 		elapsed += Time.deltaTime;
 		if (elapsed > rate) {
 			elapsed = 0;
+<<<<<<< HEAD
 			float height = genHeight ();
 			/*if (spikesToDraw.Count > 0) {
 				spikesDrawn.Enqueue (genTopSpike ());
@@ -76,6 +190,13 @@ public class SpikeSpawner : MonoBehaviour {
 
 			spikesDrawn.Enqueue (genSpike (spawnY, height));
 			spikesDrawn.Enqueue (genSpike (1 - spawnY, -height));
+=======
+			if (spikesToDraw.Count > 0) {
+				GameObject s = Instantiate (spike, new Vector3 (spawnX, spawnY), Quaternion.identity) as GameObject;
+				s.GetComponent<SpriteRenderer> ().transform.localScale = new Vector3 (s.GetComponent<SpriteRenderer> ().transform.localScale.x, (spikesToDraw.Dequeue ()-1)*6);
+				spikesDrawn.Enqueue (s);
+			}
+>>>>>>> 82b230c091dc09f75c21d1faa25696d4f7642c80
 
 			if (spikesDrawn.Count > 0 && spikesDrawn.Peek ().transform.position.x < despawnX) {
 				Destroy (spikesDrawn.Dequeue ());

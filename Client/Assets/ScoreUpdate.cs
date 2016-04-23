@@ -3,12 +3,13 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class ScoreUpdate : MonoBehaviour {
-	float score = 0;
+	public float score;
 	Text text;
 
 	// Use this for initialization
 	void Start () {
-		 text = GetComponent<Text>();
+		score = 0;
+		text = GetComponent<Text>();
 	}
 
 	// Update is called once per frame
