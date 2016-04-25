@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Timers;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class getData : MonoBehaviour
 {
@@ -136,9 +137,16 @@ public class getData : MonoBehaviour
 			if (data.Length == 2) {
 				GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
 			} else {
-				Debug.Log ("Unhandled response " + resSocket + " parsed as " + data.ToString());
+				Debug.Log ("Unhandled responses " + resSocket);
 			}
         }
+
+		float v = CrossPlatformInputManager.GetAxis ("Vertical"); ;
+		if (v != 0) {
+			writeSocket (((v > 0) ? 1 : -1).ToString ());
+			print ("wrote: " + ((v > 0) ? 1 : -1).ToString ());
+		}
+
     }
    
 }
