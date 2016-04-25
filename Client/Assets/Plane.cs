@@ -21,10 +21,17 @@ namespace UnityStandardAssets._2D
 		}
 
 
-		public void Move(float move, bool crouch, bool jump)
+		public void Move(float move, bool flap)
 		{
-			m_Rigidbody2D.velocity = new Vector2 (0, move * m_MaxSpeed);
+			if (!flap) {
+				m_Rigidbody2D.velocity = new Vector2 (0, move * m_MaxSpeed);
+			} else {
+				if (m_Rigidbody2D.velocity.y < 0) {
+					m_Rigidbody2D.AddForce( new Vector2(0, 10*((move>0) ? 1 : 0)), ForceMode2D.Impulse);
+				}
+			}
 
 		}
+
 	}
 }
