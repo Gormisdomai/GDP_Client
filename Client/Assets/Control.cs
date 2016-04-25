@@ -8,6 +8,7 @@ namespace UnityStandardAssets._2D
 	public class Control : MonoBehaviour
 	{
 		private Plane m_Character;
+		public bool flappy = false;
 
 		private void Awake()
 		{
@@ -33,7 +34,7 @@ namespace UnityStandardAssets._2D
 		{
 			float v = CrossPlatformInputManager.GetAxis("Vertical");
 			// Pass all parameters to the character control script.
-			m_Character.Move(v, false, false);
+			m_Character.Move(v, flappy);
 		}
 	}
 }
