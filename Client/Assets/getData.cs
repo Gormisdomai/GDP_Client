@@ -133,7 +133,11 @@ public class getData : MonoBehaviour
             resetTimer();
             //Debug.Log(resSocket); //print the response in console
 			string[] data = resSocket.Split(',');
-			GetComponent<SpikeSpawner>().addSpike(new float[] {float.Parse(data[0]), float.Parse(data[1])} );
+			if (data.Length == 2) {
+				GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
+			} else {
+				Debug.Log ("Unhandled response " + resSocket + " parsed as " + data.ToString());
+			}
         }
     }
    
