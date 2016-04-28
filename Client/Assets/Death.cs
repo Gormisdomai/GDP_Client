@@ -38,13 +38,20 @@ public class Death : MonoBehaviour {
 	public void PlayerCrashes() {
 		RegisterScore();
 		Time.timeScale = 0.0f;
-		Button Menu = (Button) Object.Instantiate(MenuButton,new Vector3(-3.5f,-1.5f,0.0f),Quaternion.identity);
-		Button Again = (Button) Object.Instantiate(TryAgainButton,new Vector3(3.5f,-1.5f,0.0f),Quaternion.identity);
-		Text text = (Text) Object.Instantiate(DeathText,new Vector3(0.0f,1.5f,0.0f),Quaternion.identity);
-		text.transform.parent = GameObject.Find("Canvas").transform;
-		Menu.transform.parent = GameObject.Find("Canvas").transform;
-		Again.transform.parent = GameObject.Find("Canvas").transform;
-		Menu.onClick.AddListener(toMenu);
-		Again.onClick.AddListener(reload);
+		Text text = (Text) Object.Instantiate(DeathText,Vector3.zero,Quaternion.identity);
+		Button menu = (Button) Object.Instantiate(MenuButton,Vector3.zero,Quaternion.identity);
+		Button again = (Button) Object.Instantiate(TryAgainButton,Vector3.zero,Quaternion.identity);
+		Transform canvas = GameObject.Find("Canvas").transform;
+		text.transform.parent = canvas;
+		menu.transform.parent = canvas;
+		again.transform.parent = canvas;
+		text.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+		text.transform.localPosition = new Vector3(0.0f,150.0f,0.0f);
+		menu.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+		menu.transform.localPosition = new Vector3(-300.0f,-150.0f,0.0f);
+		again.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+		again.transform.localPosition = new Vector3(300.0f,-150.0f,0.0f);
+		menu.onClick.AddListener(toMenu);
+		again.onClick.AddListener(reload);
 	}
 }

@@ -20,4 +20,10 @@ public class MainMenu : MonoBehaviour {
 		SceneManager.LoadScene("High_Scores");
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown("escape")) {
+    		Application.Quit();
+		}
+	}
 }

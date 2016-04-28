@@ -1,0 +1,81 @@
+Initialize engine version: 5.3.2f1 (e87ab445ead0)
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: Microsoft Basic Render Driver (ID=0x8c)
+    Vendor:   Microsoft
+    VRAM:     1023 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  1.122 seconds
+Platform assembly: E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: E:\Programs\GroupPrac\GDP_Client\Client\build64_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.221700 ms
+59
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+45
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+30
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+28
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+23
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 6.091928 ms
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 222.
+Total: 0.237158 ms (FindLiveObjects: 0.020519 ms CreateObjectMapping: 0.007892 ms MarkObjects: 0.200854 ms  DeleteObjects: 0.005129 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.662543 ms
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 227.
+Total: 0.219006 ms (FindLiveObjects: 0.017757 ms CreateObjectMapping: 0.008286 ms MarkObjects: 0.187043 ms  DeleteObjects: 0.005129 ms)
+
+59
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+45
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+30
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+28
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+23
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 11f8 -> priority: 1 
