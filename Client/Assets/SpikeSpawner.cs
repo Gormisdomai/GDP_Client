@@ -6,9 +6,9 @@ using System;
 public class SpikeSpawner : MonoBehaviour {
 
 	[SerializeField] public GameObject spike;
-	//TODO, change this type to support mean and SD
 	private Queue<float[]> spikesToDraw = new Queue<float[]> ();
 	private Queue<GameObject> spikesDrawn = new Queue<GameObject>();
+	private Queue<GameObject> inactiveSpikes = new Queue<GameObject>();
 
 	public float rate = 10;
 	public float elapsed = 0;
@@ -16,6 +16,16 @@ public class SpikeSpawner : MonoBehaviour {
 	public float spawnX = 100;
 	public float spawnY = 0;
 	public float speed = 3;
+
+	/** Initialises the spike spawner. */
+	void Start() {
+		/* Create some spikes for the game to use */
+		for (int i = 0; i < 10; i++) {
+			GameObject s = Instantiate (spike, new Vector2 (), Quaternion.identity) as GameObject;
+			s.SetActive (false);
+			inactiveSpikes.Enqueue (s);
+		}
+	}
 
 	/** Returns the height of the next spike. */
 	float genHeight() {
@@ -27,8 +37,10 @@ public class SpikeSpawner : MonoBehaviour {
 
 	/** Generates and returns a new spike object at the given location in the frame. */
 	GameObject genSpike(float new_spawnY, float height) {
-		GameObject s = Instantiate (spike, new Vector2 (spawnX, new_spawnY), Quaternion.identity) as GameObject;
+		GameObject s = inactiveSpikes.Dequeue ();
+		s.GetComponent<SpriteRenderer> ().transform.position = new Vector3 (spawnX, new_spawnY);
 		s.GetComponent<SpriteRenderer> ().transform.localScale = new Vector3 (s.GetComponent<SpriteRenderer> ().transform.localScale.x, height);
+		s.SetActive (true);
 		return s;
 	}
 		
@@ -50,13 +62,12 @@ public class SpikeSpawner : MonoBehaviour {
 			}
 
 			if (spikesDrawn.Count > 0 && spikesDrawn.Peek ().transform.position.x < despawnX) {
-				Destroy (spikesDrawn.Dequeue ());
-				Destroy (spikesDrawn.Dequeue ());
+				inactiveSpikes.Enqueue (spikesDrawn.Dequeue ());
+				inactiveSpikes.Enqueue (spikesDrawn.Dequeue ());
 			}
 		}
 	}
 
-	//TODO change this to support mean and SD
 	public void addSpike(float[] data) {
 		print ("spike queued: (" + data[0] + ", " + data[1] + ")");
 		spikesToDraw.Enqueue(data);

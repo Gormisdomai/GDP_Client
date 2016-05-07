@@ -16,7 +16,7 @@ public class getData : MonoBehaviour
     public string conHost = "tcp.ngrok.io";
 
     //port for the server, make sure to unblock this in your router firewall if you want to allow external connections
-    public int conPort = 17336;
+	public int conPort = 13168;
 
     //a true/false variable for connection status
     public bool socketReady = false;
