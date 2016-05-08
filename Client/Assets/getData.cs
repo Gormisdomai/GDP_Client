@@ -100,7 +100,7 @@ public class getData : MonoBehaviour
         }
     }
 
-    //The timer marks the connection as expired unless 
+    //The timer marks the connection as expired unless
     //the client resets it before 5 seconds passed.
     private Timer aTimer;
     private void resetTimer()
@@ -133,12 +133,13 @@ public class getData : MonoBehaviour
         {
             resetTimer();
             //Debug.Log(resSocket); //print the response in console
-			string[] data = resSocket.Split(',');
-			if (data.Length == 2) {
-				GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
-			} else {
-				Debug.Log ("Unhandled responses " + resSocket);
-			}
+			string[] allData = resSocket.Split('\n');
+            foreach (String d in allData) {
+                string[] data = d.Split(',');
+                if (data.Length == 2) {
+				    GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
+                }
+            }
         }
 
 		float v = CrossPlatformInputManager.GetAxis ("Vertical"); ;
@@ -148,6 +149,5 @@ public class getData : MonoBehaviour
 		}
 
     }
-   
-}
 
+}

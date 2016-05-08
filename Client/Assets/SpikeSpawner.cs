@@ -8,7 +8,8 @@ public class SpikeSpawner : MonoBehaviour {
 	[SerializeField] public GameObject spike;
 	//TODO, change this type to support mean and SD
 	private Queue<float[]> spikesToDraw = new Queue<float[]> ();
-	private Queue<GameObject> spikesDrawn = new Queue<GameObject>();
+	private Queue<GameObject> spikesDrawnTop = new Queue<GameObject>();
+	private Queue<GameObject> spikesDrawnBottom = new Queue<GameObject>();
 
 	public float despawnX;
 	public float spawnX;
@@ -37,25 +38,62 @@ public class SpikeSpawner : MonoBehaviour {
 	GameObject genSpikeTop(float upper) { //add triangle
 		float y = upper * 5;
 		if (lastTop != null) {
-			Vector2 last = getCorner(lastTop);
-			lastTop = genRectTop(last.x,spawnX,Math.Min(y,last.y));
+			Vector2 last = getCornerTop(lastTop);
+			lastTop = genRectTop(last.x,spawnX,Math.Max(y,last.y));
 		}
 		else {
-			lastTop = genRectTop(0,spawnX,y); //probably not 0
+			lastTop = genRectTop(despawnX,spawnX,y);
 		}
 		return lastTop;
 	}
 
-	Vector2 getCorner(GameObject obj) { //assume rect for now, and top
+	Vector2 getCornerTop(GameObject obj) { //assume rect for now
 		Vector2 scale = obj.transform.localScale;
 		Vector2 pos = obj.transform.localPosition;
 		return new Vector2(scale.x + pos.x, 2*pos.y - 6);
 	}
 
 	// deletes rectangles which have disappeared off the screen
-	void deleteOldObjects() {
-		while (getCorner(spikesDrawn.Peek()).x < despawnX) {
-			Destroy (spikesDrawn.Dequeue());
+	void deleteOldObjectsTop() {
+		while (getCornerTop(spikesDrawnTop.Peek()).x < despawnX) {
+			Destroy (spikesDrawnTop.Dequeue());
+		}
+	}
+
+	// generates rectangle with top corners (l,y) and (r,y)
+	public void f() {
+		genRectBottom(2,4,-2.5f);
+	}
+	GameObject genRectBottom(float l, float r, float y) {
+		GameObject rect = (GameObject) Instantiate(square, new Vector2 ((l+r)/2,(y-6)/2), Quaternion.identity);
+		rect.transform.localScale = new Vector2((r-l)/2,(6+y)/2);
+		rect.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+		return rect;
+	}
+
+	GameObject lastBottom;
+	GameObject genSpikeBottom(float lower) { //add triangle
+		float y = lower * 5;
+		if (lastBottom != null) {
+			Vector2 last = getCornerBottom(lastBottom);
+			lastBottom = genRectBottom(last.x,spawnX,Math.Min(y,last.y));
+		}
+		else {
+			lastBottom = genRectBottom(despawnX,spawnX,y);
+		}
+		return lastBottom;
+	}
+
+	Vector2 getCornerBottom(GameObject obj) { //assume rect for now
+		Vector2 scale = obj.transform.localScale;
+		Vector2 pos = obj.transform.localPosition;
+		return new Vector2(scale.x + pos.x, 2*pos.y + 6);
+	}
+
+	// deletes rectangles which have disappeared off the screen
+	void deleteOldObjectsBottom() {
+		while (getCornerBottom(spikesDrawnBottom.Peek()).x < despawnX) {
+			Destroy (spikesDrawnBottom.Dequeue());
 		}
 	}
 
@@ -64,9 +102,10 @@ public class SpikeSpawner : MonoBehaviour {
 		if (spikesToDraw.Count > 0) { // possible issues if no spikes to draw, but doesnt seem to happen
 			print ("Spike drawn");
 			float upper = genHeight()/5;
-			spikesDrawn.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -1 (very bottom of screen) and 1 (top)
-			//spikesDrawn.Enqueue(genSpikeBottom(lower)); not yet implemented
-			deleteOldObjects();
+			float lower = -upper;
+			spikesDrawnTop.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -1 (very bottom of screen) and 1 (top)
+			spikesDrawnBottom.Enqueue(genSpikeBottom(lower));
+			deleteOldObjectsTop(); deleteOldObjectsBottom();
 		}
 	}
 
