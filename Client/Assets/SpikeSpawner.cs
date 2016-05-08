@@ -16,6 +16,7 @@ public class SpikeSpawner : MonoBehaviour {
 	public float speed;
 	public float SFadd;
 	public float SFmult;
+	public float limit; // highest absolute value to draw walls at
 
 	public GameObject square;
 	public GameObject triangle;
@@ -98,9 +99,11 @@ public class SpikeSpawner : MonoBehaviour {
 			float[] data = spikesToDraw.Dequeue();
 			float q = data[0]/data[1]; // (tick-mean)/sd
 			float upper = q + SFadd;
-			upper = 5 - (5-upper)/SFmult; print(upper);
+			upper = 5 - (5-upper)/SFmult;
+			upper = Math.Min(limit,upper);
 			float lower = q - SFadd;
-			lower = (lower+5)/SFmult - 5; print(lower);
+			lower = (lower+5)/SFmult - 5;
+			lower = Math.Max(-limit,lower);
 			spikesDrawnTop.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -5 (very bottom of screen) and 5 (top)
 			spikesDrawnBottom.Enqueue(genSpikeBottom(lower));
 			deleteOldObjectsTop(); deleteOldObjectsBottom();
