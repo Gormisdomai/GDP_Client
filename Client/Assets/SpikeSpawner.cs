@@ -28,10 +28,10 @@ public class SpikeSpawner : MonoBehaviour {
 
 	GameObject lastTop;
 	GameObject genSpikeTop(float upper) { //add triangle
-		float y = upper * 5;
+		float y = upper;
 		if (lastTop != null) {
 			Vector2 last = getCornerTop(lastTop);
-			lastTop = genRectTop(last.x,spawnX,Math.Max(y,last.y));
+			lastTop = genRectTop(last.x,spawnX,y);//Math.Max(y,last.y));
 		}
 		else {
 			lastTop = genRectTop(despawnX,spawnX,y);
@@ -65,10 +65,10 @@ public class SpikeSpawner : MonoBehaviour {
 
 	GameObject lastBottom;
 	GameObject genSpikeBottom(float lower) { //add triangle
-		float y = lower * 5;
+		float y = lower;
 		if (lastBottom != null) {
 			Vector2 last = getCornerBottom(lastBottom);
-			lastBottom = genRectBottom(last.x,spawnX,Math.Min(y,last.y));
+			lastBottom = genRectBottom(last.x,spawnX,y);//Math.Min(y,last.y));
 		}
 		else {
 			lastBottom = genRectBottom(despawnX,spawnX,y);
@@ -96,9 +96,9 @@ public class SpikeSpawner : MonoBehaviour {
 			float[] data = spikesToDraw.Dequeue();
 			float diff = data [0]; // tick - mean
 			float sd = data[1];
-			float upper = (diff/sd +1)/5;
-			float lower = (diff/sd -1)/5;
-			spikesDrawnTop.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -1 (very bottom of screen) and 1 (top)
+			float upper = (diff/sd +1); print(upper);
+			float lower = upper-2; print(lower);
+			spikesDrawnTop.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -5 (very bottom of screen) and 5 (top)
 			spikesDrawnBottom.Enqueue(genSpikeBottom(lower));
 			deleteOldObjectsTop(); deleteOldObjectsBottom();
 		}
