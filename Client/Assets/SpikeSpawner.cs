@@ -18,14 +18,6 @@ public class SpikeSpawner : MonoBehaviour {
 	public GameObject square;
 	public GameObject triangle;
 
-	/** Returns the height of the next spike. */
-	float genHeight() {
-		float[] data = spikesToDraw.Dequeue();
-		float average = data [0];
-		float sd = data[1];
-		return (average + 50*sd);
-	}
-
 	// generates rectangle with bottom corners (l,y) and (r,y)
 	GameObject genRectTop(float l, float r, float y) {
 		GameObject rect = (GameObject) Instantiate(square, new Vector2 ((l+r)/2,(y+6)/2), Quaternion.identity);
@@ -101,8 +93,11 @@ public class SpikeSpawner : MonoBehaviour {
 	void Update () {
 		if (spikesToDraw.Count > 0) { // possible issues if no spikes to draw, but doesnt seem to happen
 			print ("Spike drawn");
-			float upper = genHeight()/5;
-			float lower = -upper;
+			float[] data = spikesToDraw.Dequeue();
+			float diff = data [0]; // tick - mean
+			float sd = data[1];
+			float upper = (diff/sd +1)/5;
+			float lower = (diff/sd -1)/5;
 			spikesDrawnTop.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -1 (very bottom of screen) and 1 (top)
 			spikesDrawnBottom.Enqueue(genSpikeBottom(lower));
 			deleteOldObjectsTop(); deleteOldObjectsBottom();
