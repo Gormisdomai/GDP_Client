@@ -30,6 +30,12 @@ namespace UnityStandardAssets._2D
 					m_Rigidbody2D.AddForce( new Vector2(0, 10*((move>0) ? 1 : 0)), ForceMode2D.Impulse);
 				}
 			}
+			Vector2 vel = m_Rigidbody2D.velocity + (new Vector2(GameObject.Find ("SpikeSpawner").GetComponent <SpikeSpawner>().speed, 0));
+			if (vel != Vector2.zero) 
+			{
+				float angle = Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg;
+				transform.rotation = Quaternion.AngleAxis(angle - 60, Vector3.forward);
+			}
 
 		}
 
