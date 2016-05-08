@@ -6,26 +6,16 @@ using System;
 public class SpikeSpawner : MonoBehaviour {
 
 	[SerializeField] public GameObject spike;
+	//TODO, change this type to support mean and SD
 	private Queue<float[]> spikesToDraw = new Queue<float[]> ();
 	private Queue<GameObject> spikesDrawn = new Queue<GameObject>();
-	private Queue<GameObject> inactiveSpikes = new Queue<GameObject>();
 
-	public float rate = 10;
-	public float elapsed = 0;
-	public float despawnX = 0;
-	public float spawnX = 100;
-	public float spawnY = 0;
-	public float speed = 3;
+	public float despawnX;
+	public float spawnX;
+	public float speed;
 
-	/** Initialises the spike spawner. */
-	void Start() {
-		/* Create some spikes for the game to use */
-		for (int i = 0; i < 10; i++) {
-			GameObject s = Instantiate (spike, new Vector2 (), Quaternion.identity) as GameObject;
-			s.SetActive (false);
-			inactiveSpikes.Enqueue (s);
-		}
-	}
+	public GameObject square;
+	public GameObject triangle;
 
 	/** Returns the height of the next spike. */
 	float genHeight() {
@@ -35,41 +25,59 @@ public class SpikeSpawner : MonoBehaviour {
 		return (average + 50*sd);
 	}
 
-	/** Generates and returns a new spike object at the given location in the frame. */
-	GameObject genSpike(float new_spawnY, float height) {
-		GameObject s = inactiveSpikes.Dequeue ();
-		s.GetComponent<SpriteRenderer> ().transform.position = new Vector3 (spawnX, new_spawnY);
-		s.GetComponent<SpriteRenderer> ().transform.localScale = new Vector3 (s.GetComponent<SpriteRenderer> ().transform.localScale.x, height);
-		s.SetActive (true);
-		return s;
+	// generates rectangle with bottom corners (l,y) and (r,y)
+	GameObject genRectTop(float l, float r, float y) {
+		GameObject rect = (GameObject) Instantiate(square, new Vector2 ((l+r)/2,(y+6)/2), Quaternion.identity);
+		rect.transform.localScale = new Vector2((r-l)/2,(6-y)/2);
+		rect.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+		return rect;
 	}
-		
+
+	GameObject lastTop;
+	GameObject genSpikeTop(float upper) { //add triangle
+		float y = upper * 5;
+		if (lastTop != null) {
+			Vector2 last = getCorner(lastTop);
+			lastTop = genRectTop(last.x,spawnX,Math.Min(y,last.y));
+		}
+		else {
+			lastTop = genRectTop(0,spawnX,y); //probably not 0
+		}
+		return lastTop;
+	}
+
+	Vector2 getCorner(GameObject obj) { //assume rect for now, and top
+		Vector2 scale = obj.transform.localScale;
+		Vector2 pos = obj.transform.localPosition;
+		return new Vector2(scale.x + pos.x, 2*pos.y - 6);
+	}
+
+	// deletes rectangles which have disappeared off the screen
+	void deleteOldObjects() {
+		while (getCorner(spikesDrawn.Peek()).x < despawnX) {
+			Destroy (spikesDrawn.Dequeue());
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
-		foreach (GameObject s in spikesDrawn) {
-			s.transform.position -= new Vector3(Time.deltaTime * speed, 0);
-
-		}
-
-		elapsed += Time.deltaTime;
-		if (elapsed > rate) {
-			if (spikesToDraw.Count > 0) {
-				print ("Spike drawn");
-				elapsed = 0;
-				float height = genHeight ();
-				spikesDrawn.Enqueue (genSpike (spawnY, height));
-				spikesDrawn.Enqueue (genSpike (1 - spawnY, -height));
-			}
-
-			if (spikesDrawn.Count > 0 && spikesDrawn.Peek ().transform.position.x < despawnX) {
-				inactiveSpikes.Enqueue (spikesDrawn.Dequeue ());
-				inactiveSpikes.Enqueue (spikesDrawn.Dequeue ());
-			}
+		if (spikesToDraw.Count > 0) { // possible issues if no spikes to draw, but doesnt seem to happen
+			print ("Spike drawn");
+			float upper = genHeight()/5;
+			spikesDrawn.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -1 (very bottom of screen) and 1 (top)
+			//spikesDrawn.Enqueue(genSpikeBottom(lower)); not yet implemented
+			deleteOldObjects();
 		}
 	}
 
+	//TODO change this to support mean and SD
 	public void addSpike(float[] data) {
 		print ("spike queued: (" + data[0] + ", " + data[1] + ")");
 		spikesToDraw.Enqueue(data);
 	}
 }
+
+// Very early implementation of solid walls, will look a lot better when texture changed, smoother and perhaps server sending data more frequently.
+// Very much work in progress, but decided to push before going to bed so people can work with it.
+// For Ryan/Vasil, your interaction with the rest of the program should now (probably) be entirely through setting the correct values for upper and lower in lines 67-68, based on the data in the spikesToDraw queue
+// I shall get straight back to work on this in the morning.
