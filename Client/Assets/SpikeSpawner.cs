@@ -14,6 +14,8 @@ public class SpikeSpawner : MonoBehaviour {
 	public float despawnX;
 	public float spawnX;
 	public float speed;
+	public float SFadd;
+	public float SFmult;
 
 	public GameObject square;
 	public GameObject triangle;
@@ -94,10 +96,11 @@ public class SpikeSpawner : MonoBehaviour {
 		if (spikesToDraw.Count > 0) { // possible issues if no spikes to draw, but doesnt seem to happen
 			print ("Spike drawn");
 			float[] data = spikesToDraw.Dequeue();
-			float diff = data [0]; // tick - mean
-			float sd = data[1];
-			float upper = (diff/sd +1); print(upper);
-			float lower = upper-2; print(lower);
+			float q = data[0]/data[1]; // (tick-mean)/sd
+			float upper = q + SFadd;
+			upper = 5 - (5-upper)/SFmult; print(upper);
+			float lower = q - SFadd;
+			lower = (lower+5)/SFmult - 5; print(lower);
 			spikesDrawnTop.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -5 (very bottom of screen) and 5 (top)
 			spikesDrawnBottom.Enqueue(genSpikeBottom(lower));
 			deleteOldObjectsTop(); deleteOldObjectsBottom();
