@@ -156,7 +156,7 @@ public class SpikeSpawner : MonoBehaviour {
 		dist = speed/serverRate;
 		float y = SFadd; // may lead to impossible situations? probably not
 		lastTop = genRectTop(despawnX,spawnX,y);
-		lastBottom = genRectBottom(despawnX,spawnX,-y);
+		lastBottom = genRectBottom(despawnX,1.5*spawnX,-y);
 		spikesDrawnTop.Enqueue(lastTop);
 		spikesDrawnBottom.Enqueue(lastBottom);
 		for (int i = (int) despawnX; i <= (int) despawnX; i++) {
