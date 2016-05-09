@@ -118,8 +118,8 @@ public class SpikeSpawner : MonoBehaviour {
 	}
 
 	// deletes rectangles which have disappeared off the screen
-	void deleteOldObjectsTop() { //////////////////////////////////////////////////////////////////////////////////////
-		while (spikesDrawnTop.Count > 60/dist && spikesDrawnTop.Peek().transform.localPosition.x < despawnX) {
+	void deleteOldObjectsTop() {
+		while (spikesDrawnTop.Count > 100/dist && spikesDrawnTop.Peek().transform.localPosition.x < despawnX) {//100 is too high, 5 screens of objects
 			Destroy (spikesDrawnTop.Dequeue());
 			Destroy (spikesDrawnTop.Dequeue());
 		}
@@ -127,7 +127,7 @@ public class SpikeSpawner : MonoBehaviour {
 
 	// deletes rectangles which have disappeared off the screen
 	void deleteOldObjectsBottom() {
-		while (spikesDrawnBottom.Count > 60/dist && spikesDrawnBottom.Peek().transform.localPosition.x < despawnX) {
+		while (spikesDrawnBottom.Count > 100/dist && spikesDrawnBottom.Peek().transform.localPosition.x < despawnX) {
 			Destroy (spikesDrawnBottom.Dequeue());
 			Destroy (spikesDrawnBottom.Dequeue());
 		}
@@ -155,8 +155,8 @@ public class SpikeSpawner : MonoBehaviour {
 	void Start() {
 		dist = speed/serverRate;
 		float y = SFadd; // may lead to impossible situations? probably not
-		lastTop = genRectTop(despawnX,spawnX,y);
-		lastBottom = genRectBottom(despawnX,1.5*spawnX,-y);
+		lastTop = genRectTop(despawnX,2*spawnX,y);
+		lastBottom = genRectBottom(despawnX,2*spawnX,-y);
 		spikesDrawnTop.Enqueue(lastTop);
 		spikesDrawnBottom.Enqueue(lastBottom);
 		for (int i = (int) despawnX; i <= (int) despawnX; i++) {

@@ -17,7 +17,7 @@ namespace UnityStandardAssets._2D
 
 		void OnTriggerEnter2D(Collider2D col){
 			if (col.gameObject.tag == "Hazard") {
-				col.gameObject.GetComponent<SpriteRenderer> ().color = Color.blue;
+				//col.gameObject.GetComponent<SpriteRenderer> ().color = Color.blue;
 				transform.Rotate (Vector3.forward * -10);
 				GetComponent<Death>().PlayerCrashes();
 			}
@@ -25,7 +25,7 @@ namespace UnityStandardAssets._2D
 
 		void OnTriggerExit2D(Collider2D col){
 			if (col.gameObject.tag == "Hazard") {
-				col.gameObject.GetComponent<SpriteRenderer> ().color = Color.white;
+				//col.gameObject.GetComponent<SpriteRenderer> ().color = Color.white;
 				transform.Rotate (Vector3.forward * +10);
 			}
 		}
