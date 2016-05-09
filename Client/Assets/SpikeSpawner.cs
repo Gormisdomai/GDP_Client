@@ -17,9 +17,44 @@ public class SpikeSpawner : MonoBehaviour {
 	public float SFadd;
 	public float SFmult;
 	public float limit; // highest absolute value to draw walls at
+	public float serverRate; // data points sent per second
+	public float barWidth;
+	float dist; // x distance between points (= speed/serverRate)
 
 	public GameObject square;
 	public GameObject triangle;
+	public GameObject squareBlack;
+
+	// generates triangle with vertices (x1,y1) and (x2,y2)
+	GameObject genTriTop(float x1, float y1, float x2, float y2) {
+		GameObject tri = (GameObject) Instantiate(triangle, new Vector2 ((x1+x2)/2,(y1+y2)/2), Quaternion.identity);
+		tri.transform.localScale = new Vector2((x1-x2)/2, (y2-y1)/2);
+		if (y2 > y1) {
+			tri.GetComponent<SpriteRenderer>().flipX = true;
+			tri.GetComponent<SpriteRenderer>().flipY = true;
+		}
+		tri.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+	 	return tri;
+	}
+
+	// generates triangle with vertices (x1,y1) and (x2,y2)
+	GameObject genTriBottom(float x1, float y1, float x2, float y2) {
+		GameObject tri = (GameObject) Instantiate(triangle, new Vector2 ((x1+x2)/2,(y1+y2)/2), Quaternion.identity);
+		tri.transform.localScale = new Vector2((x1-x2)/2, (y2-y1)/2);
+		if (y2 < y1) {
+			tri.GetComponent<SpriteRenderer>().flipX = true;
+			tri.GetComponent<SpriteRenderer>().flipY = true;
+		}
+		tri.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+	 	return tri;
+	}
+
+	GameObject genBar(float x) {
+		GameObject bar = (GameObject) Instantiate(squareBlack, new Vector2(x,0), Quaternion.identity);
+		bar.transform.localScale = new Vector2(barWidth/2, 6);
+		bar.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+		return bar;
+	}
 
 	// generates rectangle with bottom corners (l,y) and (r,y)
 	GameObject genRectTop(float l, float r, float y) {
@@ -29,36 +64,7 @@ public class SpikeSpawner : MonoBehaviour {
 		return rect;
 	}
 
-	GameObject lastTop;
-	GameObject genSpikeTop(float upper) { //add triangle
-		float y = upper;
-		if (lastTop != null) {
-			Vector2 last = getCornerTop(lastTop);
-			lastTop = genRectTop(last.x,spawnX,y);//Math.Max(y,last.y));
-		}
-		else {
-			lastTop = genRectTop(despawnX,spawnX,y);
-		}
-		return lastTop;
-	}
-
-	Vector2 getCornerTop(GameObject obj) { //assume rect for now
-		Vector2 scale = obj.transform.localScale;
-		Vector2 pos = obj.transform.localPosition;
-		return new Vector2(scale.x + pos.x, 2*pos.y - 6);
-	}
-
-	// deletes rectangles which have disappeared off the screen
-	void deleteOldObjectsTop() {
-		while (getCornerTop(spikesDrawnTop.Peek()).x < despawnX) {
-			Destroy (spikesDrawnTop.Dequeue());
-		}
-	}
-
 	// generates rectangle with top corners (l,y) and (r,y)
-	public void f() {
-		genRectBottom(2,4,-2.5f);
-	}
 	GameObject genRectBottom(float l, float r, float y) {
 		GameObject rect = (GameObject) Instantiate(square, new Vector2 ((l+r)/2,(y-6)/2), Quaternion.identity);
 		rect.transform.localScale = new Vector2((r-l)/2,(6+y)/2);
@@ -66,37 +72,72 @@ public class SpikeSpawner : MonoBehaviour {
 		return rect;
 	}
 
-	GameObject lastBottom;
-	GameObject genSpikeBottom(float lower) { //add triangle
-		float y = lower;
-		if (lastBottom != null) {
-			Vector2 last = getCornerBottom(lastBottom);
-			lastBottom = genRectBottom(last.x,spawnX,y);//Math.Min(y,last.y));
-		}
-		else {
-			lastBottom = genRectBottom(despawnX,spawnX,y);
-		}
-		return lastBottom;
+	GameObject lastTop;
+	void genSpikeTop(float upper) {
+		float y = upper;
+		Vector2 last = getCornerTop(lastTop);
+		genBar(last.x + dist);
+		GameObject tri = genTriTop(last.x, last.y, last.x+dist, upper);
+		spikesDrawnTop.Enqueue(tri);
+		spikesDrawnTop.Enqueue(genRectTop(last.x,last.x + dist, Math.Max(y,last.y)));
+		lastTop = tri;
 	}
 
-	Vector2 getCornerBottom(GameObject obj) { //assume rect for now
+	GameObject lastBottom;
+	void genSpikeBottom(float lower) { //add triangle
+		float y = lower;
+		Vector2 last = getCornerBottom(lastBottom);
+		GameObject tri = genTriBottom(last.x, last.y, last.x+dist, lower);
+		spikesDrawnBottom.Enqueue(tri);
+		spikesDrawnBottom.Enqueue(genRectBottom(last.x,last.x + dist, Math.Min(y,last.y)));
+		lastBottom = tri;
+	}
+
+	bool firstTop = true;
+	Vector2 getCornerTop(GameObject obj) { //assume triangle
 		Vector2 scale = obj.transform.localScale;
 		Vector2 pos = obj.transform.localPosition;
-		return new Vector2(scale.x + pos.x, 2*pos.y + 6);
+		if (firstTop) {
+			firstTop = false;
+			return new Vector2(scale.x + pos.x, 2*pos.y - 6);
+		} else {
+			return new Vector2(pos.x - scale.x, pos.y + scale.y);
+		}
+	}
+
+	bool firstBottom = true;
+	Vector2 getCornerBottom(GameObject obj) { //assume triangle
+		Vector2 scale = obj.transform.localScale;
+		Vector2 pos = obj.transform.localPosition;
+		if (firstBottom) {
+			firstBottom = false;
+			return new Vector2(scale.x + pos.x, 2*pos.y + 6);
+		} else {
+			return new Vector2(pos.x - scale.x, pos.y + scale.y);
+		}
+	}
+
+	// deletes rectangles which have disappeared off the screen
+	void deleteOldObjectsTop() { //////////////////////////////////////////////////////////////////////////////////////
+		while (spikesDrawnTop.Count > 60/dist && spikesDrawnTop.Peek().transform.localPosition.x < despawnX) {
+			Destroy (spikesDrawnTop.Dequeue());
+			Destroy (spikesDrawnTop.Dequeue());
+		}
 	}
 
 	// deletes rectangles which have disappeared off the screen
 	void deleteOldObjectsBottom() {
-		while (getCornerBottom(spikesDrawnBottom.Peek()).x < despawnX) {
+		while (spikesDrawnBottom.Count > 60/dist && spikesDrawnBottom.Peek().transform.localPosition.x < despawnX) {
+			Destroy (spikesDrawnBottom.Dequeue());
 			Destroy (spikesDrawnBottom.Dequeue());
 		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (spikesToDraw.Count > 0) { // possible issues if no spikes to draw, but doesnt seem to happen
-			print ("Spike drawn");
+		if (spikesToDraw.Count > 0) {
 			float[] data = spikesToDraw.Dequeue();
+			print ("Spike drawn");
 			float q = data[0]/data[1]; // (tick-mean)/sd
 			float upper = q + SFadd;
 			upper = 5 - (5-upper)/SFmult;
@@ -104,20 +145,31 @@ public class SpikeSpawner : MonoBehaviour {
 			float lower = q - SFadd;
 			lower = (lower+5)/SFmult - 5;
 			lower = Math.Max(-limit,lower);
-			spikesDrawnTop.Enqueue(genSpikeTop(upper)); // upper, lower expect values between -5 (very bottom of screen) and 5 (top)
-			spikesDrawnBottom.Enqueue(genSpikeBottom(lower));
-			deleteOldObjectsTop(); deleteOldObjectsBottom();
+			genSpikeTop(upper); // upper, lower expect values between -5 (very bottom of screen) and 5 (top)
+			genSpikeBottom(lower);
+			deleteOldObjectsTop();
+			deleteOldObjectsBottom();
 		}
 	}
 
-	//TODO change this to support mean and SD
+	void Start() {
+		dist = speed/serverRate;
+		float y = SFadd; // may lead to impossible situations? probably not
+		lastTop = genRectTop(despawnX,spawnX,y);
+		lastBottom = genRectBottom(despawnX,spawnX,-y);
+		spikesDrawnTop.Enqueue(lastTop);
+		spikesDrawnBottom.Enqueue(lastBottom);
+		for (int i = (int) despawnX; i <= (int) despawnX; i++) {
+			genBar(i);
+		}
+		for (int i = -3; i <= 3; i+= 3) {
+			GameObject bar = (GameObject) Instantiate(squareBlack, new Vector2(0,i), Quaternion.identity);
+			bar.transform.localScale = new Vector2(10, barWidth/2);
+		}
+	}
+
 	public void addSpike(float[] data) {
 		print ("spike queued: (" + data[0] + ", " + data[1] + ")");
 		spikesToDraw.Enqueue(data);
 	}
 }
-
-// Very early implementation of solid walls, will look a lot better when texture changed, smoother and perhaps server sending data more frequently.
-// Very much work in progress, but decided to push before going to bed so people can work with it.
-// For Ryan/Vasil, your interaction with the rest of the program should now (probably) be entirely through setting the correct values for upper and lower in lines 67-68, based on the data in the spikesToDraw queue
-// I shall get straight back to work on this in the morning.
