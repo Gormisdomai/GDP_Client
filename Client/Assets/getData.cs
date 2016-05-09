@@ -145,7 +145,7 @@ public class getData : MonoBehaviour
 		float v = CrossPlatformInputManager.GetAxis ("Vertical"); ;
 		if (v != 0) {
 			writeSocket (((v > 0) ? 1 : -1).ToString ());
-			print ("wrote: " + ((v > 0) ? 1 : -1).ToString ());
+			//print ("wrote: " + ((v > 0) ? 1 : -1).ToString ());
 		}
 
     }

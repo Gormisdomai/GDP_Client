@@ -22,7 +22,8 @@ public class SpikeSpawner : MonoBehaviour {
 	public float serverRate; // data points sent per second
 	public float barWidth;
 	float dist; // x distance between points (= speed/serverRate)
-
+	Color wallColor = new Color(85f/255f,86f/255f,96f/255f,1);
+	Color hazardColor = new Color(216f/255f,71f/255f,71f/255f,1);
 
 	public GameObject square;
 	public GameObject triangle;
@@ -37,6 +38,7 @@ public class SpikeSpawner : MonoBehaviour {
 			tri.GetComponent<SpriteRenderer>().flipY = true;
 		}
 		tri.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+		tri.tag = "Hazard Top";
 	 	return tri;
 	}
 
@@ -49,6 +51,7 @@ public class SpikeSpawner : MonoBehaviour {
 			tri.GetComponent<SpriteRenderer>().flipY = true;
 		}
 		tri.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+		tri.tag = "Hazard Bottom";
 	 	return tri;
 	}
 
@@ -65,6 +68,7 @@ public class SpikeSpawner : MonoBehaviour {
 		GameObject rect = (GameObject) Instantiate(square, new Vector2 ((l+r)/2,(y+6)/2), Quaternion.identity);
 		rect.transform.localScale = new Vector2((r-l)/2,(6-y)/2);
 		rect.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+		rect.tag = "Hazard Top";
 		return rect;
 	}
 
@@ -73,6 +77,7 @@ public class SpikeSpawner : MonoBehaviour {
 		GameObject rect = (GameObject) Instantiate(square, new Vector2 ((l+r)/2,(y-6)/2), Quaternion.identity);
 		rect.transform.localScale = new Vector2((r-l)/2,(6+y)/2);
 		rect.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed,0);
+		rect.tag = "Hazard Bottom";
 		return rect;
 	}
 
@@ -151,7 +156,7 @@ public class SpikeSpawner : MonoBehaviour {
 	void Update () {
 		while (spikesToDraw.Count > 0 && lastTop.transform.localPosition.x < spawnX) {
 			float[] data = spikesToDraw.Dequeue();
-			print ("Spike drawn");
+			//print ("Spike drawn");
 			float q = data[0]/data[1]; // (tick-mean)/sd
 			float upper = q + SFadd;
 			upper = 5 - (5-upper)/SFmult;
@@ -181,8 +186,34 @@ public class SpikeSpawner : MonoBehaviour {
 		}
 	}
 
+	void colorChange(Queue<GameObject> q, Color color) {
+		foreach (GameObject obj in q) {
+			obj.GetComponent<SpriteRenderer>().color = color;
+		}
+		if (firstDestroy) {
+			String tag = "Hazard " + ((q == spikesDrawnTop) ? "Top" : "Bottom");
+			foreach (GameObject obj in initObjects) {
+				if (obj.tag == tag) {
+					obj.GetComponent<SpriteRenderer>().color = color;
+				}
+			}
+		}
+	}
+	public void colorTop() {
+		colorChange(spikesDrawnTop, hazardColor);
+	}
+	public void decolorTop() {
+		colorChange(spikesDrawnTop, wallColor);
+	}
+	public void colorBottom() {
+		colorChange(spikesDrawnBottom, hazardColor);
+	}
+	public void decolorBottom() {
+		colorChange(spikesDrawnBottom, wallColor);
+	}
+
 	public void addSpike(float[] data) {
-		print ("spike queued: (" + data[0] + ", " + data[1] + ")");
+		//print ("spike queued: (" + data[0] + ", " + data[1] + ")");
 		spikesToDraw.Enqueue(data);
 	}
 }

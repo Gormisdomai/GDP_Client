@@ -9,13 +9,6 @@ public class MainMenu : MonoBehaviour {
 		SceneManager.LoadScene(gameScene);
 	}
 
-	void Start() {
-		// temp debug code
-		for (int i = 0; i<5; i++) {
-			print(PlayerPrefs.GetInt("score" + i.ToString()));
-		}
-	}
-
 	public void highScores() {
 		SceneManager.LoadScene("High_Scores");
 	}
