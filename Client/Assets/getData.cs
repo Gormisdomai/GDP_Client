@@ -138,7 +138,7 @@ public class getData : MonoBehaviour
                 string[] data = d.Split(',');
                 if (data.Length == 2) {
 				    GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
-					Tick (PlayerPrefs.GetString ("name"), GameObject.Find ("Character").GetComponent<Rigidbody2D>().velocity.x);
+					Tick (PlayerPrefs.GetString ("name", "anon"), GameObject.Find ("Character").GetComponent<Rigidbody2D>().velocity.x);
 				}
             }
         }
