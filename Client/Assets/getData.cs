@@ -156,7 +156,7 @@ public class getData : MonoBehaviour
 
 	public void Score(String nickname, float s){
 		if (s != 0) {
-			writeSocket ("score:user:"+nickname + s.ToString ());
+			writeSocket ("score:"+nickname + s.ToString ());
 		}
 	}
 
