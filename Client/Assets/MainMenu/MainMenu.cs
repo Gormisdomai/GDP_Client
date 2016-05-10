@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour {
 
 	public void start() {
 		SceneManager.LoadScene(gameScene);
+		PlayerPrefs.SetString ("name", "Test_name");
 	}
 
 	public void highScores() {
