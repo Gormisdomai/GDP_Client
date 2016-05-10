@@ -23,6 +23,7 @@ public class Death : MonoBehaviour {
 			PlayerPrefs.SetInt("score" + (j+1).ToString(), PlayerPrefs.GetInt("score" + j.ToString()));
 		}
 		if (i != 5) PlayerPrefs.SetInt("score" + i.ToString(), newScore);
+
 	}
 
 	void reload() {

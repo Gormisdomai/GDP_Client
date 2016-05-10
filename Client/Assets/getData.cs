@@ -149,14 +149,14 @@ public class getData : MonoBehaviour
 	public void Tick(String n, float v){
 		String nickname = n.Replace (":", "").Replace ("{", "").Replace ("}", "").Replace ("\"", "");
 		if (v != 0) {
-			writeSocket ("tick:name:"+nickname + ":direction:" + ((v > 0) ? 1 : -1).ToString ());
+			writeSocket ("move:"+ ((v > 0) ? 1 : -1).ToString ());
 		}
+		Score (nickname, GameObject.Find ("ScoreDisplay").GetComponent<ScoreUpdate> ().score);
 	}
 
-	public void Score(String n, float s){
-		String nickname = n.Replace (":", "").Replace ("{", "").Replace ("}", "").Replace ("\"", "");
+	public void Score(String nickname, float s){
 		if (s != 0) {
-			writeSocket ("died:name:"+nickname + ":score:" + s.ToString ());
+			writeSocket ("score:name:"+nickname + s.ToString ());
 		}
 	}
 
