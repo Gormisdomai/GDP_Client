@@ -3,12 +3,12 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class ScoreUpdate : MonoBehaviour {
-	public float score;
+	public float score = 0;
+	public float scale = 1;
 	Text text;
 
 	// Use this for initialization
 	void Start () {
-		score = 0;
 		text = GetComponent<Text>();
 	}
 

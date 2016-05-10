@@ -22,7 +22,10 @@ namespace UnityStandardAssets._2D
 			m_Character = GetComponent<Plane>();
 		}
 
-		void OnTriggerEnter2D(Collider2D col){
+		void OnTriggerEnter2D(Collider2D col) {
+			if (col.gameObject.tag == "Death Edge") {
+				GetComponent<Death>().PlayerCrashes();
+			}
 		}
 
 		void OnTriggerStay2D(Collider2D col) {
@@ -32,23 +35,15 @@ namespace UnityStandardAssets._2D
 			if (col.gameObject.tag == "Hazard Top") {
 				spikes.colorTop();
 			}
-			//GetComponent<Death>().PlayerCrashes();
 			if (col.gameObject.tag == "Hazard Bottom") {
 				spikes.colorBottom();
 			}
-		}
 
-		/*void OnTriggerExit2D(Collider2D col){
-			if (col.gameObject.tag == "Hazard Top" || col.gameObject.tag == "Hazard Bottom") {
-				GameObject.Find("SpikeSpawner").GetComponent<SpikeSpawner>().decolorTop();
-				//col.gameObject.GetComponent<SpriteRenderer> ().color = Color.white;
-				//transform.Rotate (Vector3.forward * +10);
-			}
-		}*/
+		}
 
 		private void FixedUpdate()
 		{
-			if (wasContact && !contact) {
+			if (wasContact && !contact) { // bit inefficient
 				wasContact = false;
 				spikes.decolorTop();
 				spikes.decolorBottom();
