@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Scenes : MonoBehaviour {
 
+	public GameObject leftCollider;
 	private bool paused = false;
 
 	public void ReloadScene() {
@@ -37,5 +38,11 @@ public class Scenes : MonoBehaviour {
 				paused = true;
 			}
 		}
+	}
+
+	private void Awake() {
+		float screenPos = GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0,0.5f,0)).x;
+		Instantiate(leftCollider, new Vector2(screenPos, 0), Quaternion.identity);
+		print("asdf asdfas dfasd fasd");
 	}
 }

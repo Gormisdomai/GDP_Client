@@ -16,12 +16,16 @@ public class SpikeSpawner : MonoBehaviour {
 	public float despawnX;
 	public float spawnX;
 	public float speed;
-	public float SFadd;
+	public float SFaddInitial;
+	public float SFaddFinal;
 	public float SFmult;
+	public float narrowingSF; // higher makes walls narrow faster
 	public float limit; // highest absolute value to draw walls at
 	public float serverRate; // data points sent per second
 	public float barWidth;
+	float SFadd;
 	float dist; // x distance between points (= speed/serverRate)
+	float time = 0;
 	Color wallColor = new Color(85f/255f,86f/255f,96f/255f,1);
 	Color hazardColor = new Color(216f/255f,71f/255f,71f/255f,1);
 
@@ -154,6 +158,8 @@ public class SpikeSpawner : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		time += Time.deltaTime;
+		SFadd = (time*narrowingSF + SFaddInitial*SFaddFinal)/(time*narrowingSF + SFaddFinal);
 		while (spikesToDraw.Count > 0 && lastTop.transform.localPosition.x < spawnX) {
 			float[] data = spikesToDraw.Dequeue();
 			//print ("Spike drawn");
@@ -171,6 +177,7 @@ public class SpikeSpawner : MonoBehaviour {
 	}
 
 	void Start() {
+		SFadd = SFaddInitial;
 		dist = speed/serverRate;
 		float y = SFadd; // may lead to impossible situations? probably not
 		lastTop = genRectTop(despawnX,2*spawnX,y);
