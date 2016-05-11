@@ -8,6 +8,7 @@ public class Death : MonoBehaviour {
 	public Button MenuButton;
 	public Button TryAgainButton;
 	public Text DeathText;
+	public bool dead = false;
 
 	// checks on exit if new score should be added to highscores
 	public void RegisterScore() {
@@ -29,15 +30,18 @@ public class Death : MonoBehaviour {
 	void reload() {
 		SceneManager.LoadScene("Test_Scene");
 		Time.timeScale = 1.0f;
+		dead = false;
 	}
 
 	void toMenu() {
 		SceneManager.LoadScene("MainMenu");
 		Time.timeScale = 1.0f;
+		dead = false;
 	}
 
 	public void PlayerCrashes() {
 		RegisterScore();
+		dead = true;
 		Time.timeScale = 0.0f;
 		Text text = (Text) Object.Instantiate(DeathText,Vector3.zero,Quaternion.identity);
 		Button menu = (Button) Object.Instantiate(MenuButton,Vector3.zero,Quaternion.identity);

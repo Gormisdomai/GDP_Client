@@ -136,14 +136,13 @@ public class getData : MonoBehaviour
 			string[] allData = resSocket.Split('\n');
             foreach (String d in allData) {
                 string[] data = d.Split(',');
-                if (data.Length == 2) {
-				    GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
-					Tick (PlayerPrefs.GetString ("name", "anon"), GameObject.Find ("Character").GetComponent<Rigidbody2D>().velocity.y);
+				if (data.Length == 2) {
+					GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
+					if (GameObject.Find ("Character").GetComponent<Death>().dead)
+						Tick (PlayerPrefs.GetString ("name", "anon"), GameObject.Find ("Character").GetComponent<Rigidbody2D> ().velocity.y);
+					}
 				}
             }
-        }
-
-
     }
 
 	public void Tick(String n, float v){
