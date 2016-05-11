@@ -138,7 +138,7 @@ public class getData : MonoBehaviour
                 string[] data = d.Split(',');
 				if (data.Length == 2) {
 					GetComponent<SpikeSpawner> ().addSpike (new float[] { float.Parse (data [0]), float.Parse (data [1]) });
-					if (GameObject.Find ("Character").GetComponent<Death>().dead)
+					if (!GameObject.Find ("Character").GetComponent<Death>().dead)
 						Tick (PlayerPrefs.GetString ("name", "anon"), GameObject.Find ("Character").GetComponent<Rigidbody2D> ().velocity.y);
 					}
 				}
@@ -146,6 +146,7 @@ public class getData : MonoBehaviour
     }
 
 	public void Tick(String n, float v){
+		print ("tick");
 		String nickname = n.Replace (":", "").Replace ("{", "").Replace ("}", "").Replace ("\"", "");
 		if (v != 0) {
 			writeSocket ("move:"+ ((v > 0) ? 1 : -1).ToString ());
